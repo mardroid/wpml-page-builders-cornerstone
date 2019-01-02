@@ -19,9 +19,6 @@
           "tests/phpunit/stub/"
         ]
     },
-    "require": {
-        "wpml/page-builders": "dev-wpmlcore-5811"
-    },
     "require-dev": {
         "roave/security-advisories": "dev-master",
         "10up/wp_mock": "~0.2.0",
@@ -36,6 +33,7 @@
         "wp-coding-standards/wpcs": "^0",
         "m4tthumphrey/php-gitlab-api": "^9.0.0",
         "php-http/guzzle6-adapter": "^1.1",
-        "otgs/unit-tests-framework": "~1.2.0"
+        "otgs/unit-tests-framework": "~1.2.0",
+        "wpml/page-builders": "dev-develop"
     }
 }
