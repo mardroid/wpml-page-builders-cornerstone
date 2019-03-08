@@ -35,8 +35,12 @@ class Test_WPML_Cornerstone_Translatable_Nodes extends OTGS_TestCase {
 			'_type' => $type,
 			$field  => rand_str(),
 		);
+
 		if ( 'headline' === $type ) {
 			$settings['text_tag'] = $wrap_tag;
+		}
+		if ( 'classic:custom-headline' === $type ) {
+			$settings['level'] = $wrap_tag;
 		}
 
 		$subject = new WPML_Cornerstone_Translatable_Nodes();
@@ -47,7 +51,11 @@ class Test_WPML_Cornerstone_Translatable_Nodes extends OTGS_TestCase {
 		$this->assertEquals( $field . '-' . $settings['_type'] . '-' . $node_id, $string->get_name() );
 		$this->assertEquals( $expected_title, $string->get_title() );
 		$this->assertEquals( $expected_editor_type, $string->get_editor_type() );
+
 		if ( 'headline' === $type ) {
+			$this->assertEquals( $wrap_tag, $string->get_wrap_tag() );
+		}
+		if ( 'classic:custom-headline' === $type ) {
 			$this->assertEquals( $wrap_tag, $string->get_wrap_tag() );
 		}
 	}
@@ -67,6 +75,7 @@ class Test_WPML_Cornerstone_Translatable_Nodes extends OTGS_TestCase {
 			array( 'breadcrumbs', 'breadcrumbs_home_label_text', 'Breadcrumbs: home label text', 'LINE' ),
 			array( 'audio', 'audio_embed_code', 'Audio: embed code', 'VISUAL' ),
 			array( 'headline', 'text_content', 'Headline text content', 'VISUAL' ),
+			array( 'classic:custom-headline', 'content', 'Classic headline text content', 'VISUAL' ),
 			array( 'content-area-off-canvas', 'off_canvas_content', 'Canvas content', 'VISUAL' ),
 			array( 'content-area-modal', 'modal_content', 'Modal content', 'VISUAL' ),
 			array( 'content-area-dropdown', 'dropdown_content', 'Dropdown content', 'VISUAL' ),
