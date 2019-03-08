@@ -1,4 +1,9 @@
 <?php
+/**
+ * Test_WPML_Cornerstone_Update_Translation Class file.
+ *
+ * @package wpml-page-builders-cornerstone
+ */
 
 /**
  * Class Test_WPML_Cornerstone_Update_Translation
@@ -9,6 +14,8 @@
 class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 
 	/**
+	 * It updates translation.
+	 *
 	 * @test
 	 */
 	public function it_updates_translation() {
@@ -26,7 +33,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'text',
 						'type'        => __( 'Custom node text', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -82,21 +89,27 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 			'text-custom-node-' . $node_id => array(
 				$lang => array(
 					'status' => 10,
-					'value'  => $translation
-				)
+					'value'  => $translation,
+				),
+			),
+		);
+
+		\WP_Mock::wpFunction(
+			'get_post_meta',
+			array(
+				'times'  => 1,
+				'args'   => array( $original_post_id, '_cornerstone_data', true ),
+				'return' => $meta_field_data,
 			)
 		);
 
-		\WP_Mock::wpFunction( 'get_post_meta', array(
-			'times'  => 1,
-			'args'   => array( $original_post_id, '_cornerstone_data', true ),
-			'return' => $meta_field_data,
-		) );
-
-		\WP_Mock::wpFunction( 'update_post_meta', array(
-			'times' => 1,
-			'args'  => array( $translated_post_id, '_cornerstone_data', $meta_field_translated_data ),
-		) );
+		\WP_Mock::wpFunction(
+			'update_post_meta',
+			array(
+				'times' => 1,
+				'args'  => array( $translated_post_id, '_cornerstone_data', $meta_field_translated_data ),
+			)
+		);
 
 		$this->add_copy_meta_fields_checks( $translated_post_id, $original_post_id );
 
@@ -128,18 +141,30 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 		$subject->update( $translated_post_id, $original_post, $string_translations, $lang );
 	}
 
+	/**
+	 * Add check of copy of meta field.
+	 *
+	 * @param int $translated_post_id Translated post id.
+	 * @param int $original_post_id   Original post id.
+	 */
 	private function add_copy_meta_fields_checks( $translated_post_id, $original_post_id ) {
 		foreach ( array( '_cornerstone_settings', '_cornerstone_version' ) as $meta_key ) {
 			$value = rand_str();
-			\WP_Mock::wpFunction( 'get_post_meta', array(
-				'times'  => 1,
-				'args'   => array( $original_post_id, $meta_key, true ),
-				'return' => $value,
-			) );
-			\WP_Mock::wpFunction( 'update_post_meta', array(
-				'times' => 1,
-				'args'  => array( $translated_post_id, $meta_key, $value ),
-			) );
+			\WP_Mock::wpFunction(
+				'get_post_meta',
+				array(
+					'times'  => 1,
+					'args'   => array( $original_post_id, $meta_key, true ),
+					'return' => $value,
+				)
+			);
+			\WP_Mock::wpFunction(
+				'update_post_meta',
+				array(
+					'times' => 1,
+					'args'  => array( $translated_post_id, $meta_key, $value ),
+				)
+			);
 			\WP_Mock::onFilter( 'wpml_pb_copy_meta_field' )
 			        ->with(
 				        array(
@@ -153,6 +178,11 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 		}
 	}
 
+	/**
+	 * Get translatable nodes.
+	 *
+	 * @return array
+	 */
 	private function get_translatable_nodes() {
 		return array(
 			'alert'                   => array(
@@ -161,7 +191,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'alert_content',
 						'type'        => __( 'Alert Content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -171,7 +201,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'text_content',
 						'type'        => __( 'Text content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -181,12 +211,12 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'quote_content',
 						'type'        => __( 'Quote content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 					array(
 						'field'       => 'quote_cite_content',
 						'type'        => __( 'Quote: cite content', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -196,12 +226,12 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'counter_number_prefix_content',
 						'type'        => __( 'Counter: number prefix', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 					array(
 						'field'       => 'counter_number_suffix_content',
 						'type'        => __( 'Counter: number suffix', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -211,7 +241,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'content',
 						'type'        => __( 'Content Area: content', 'sitepress' ),
-						'editor_type' => 'AREA'
+						'editor_type' => 'AREA',
 					),
 				),
 			),
@@ -221,7 +251,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'breadcrumbs_home_label_text',
 						'type'        => __( 'Breadcrumbs: home label text', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -231,7 +261,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'audio_embed_code',
 						'type'        => __( 'Audio: embed code', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -241,7 +271,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'text_content',
 						'type'        => __( 'Headline text content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -261,7 +291,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'off_canvas_content',
 						'type'        => __( 'Canvas content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -271,7 +301,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'modal_content',
 						'type'        => __( 'Modal content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -281,7 +311,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'dropdown_content',
 						'type'        => __( 'Dropdown content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'VISUAL',
 					),
 				),
 			),
@@ -291,12 +321,12 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'anchor_text_primary_content',
 						'type'        => __( 'Anchor text: primary content', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 					array(
 						'field'       => 'anchor_text_secondary_content',
 						'type'        => __( 'Anchor text: secondary content', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -306,7 +336,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'video_embed_code',
 						'type'        => __( 'Video: embed code', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -316,27 +346,27 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					array(
 						'field'       => 'search_placeholder',
 						'type'        => __( 'Search Inline: placeholder', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
-			'search-modal'           => array(
+			'search-modal'            => array(
 				'conditions' => array( '_type' => 'search-modal' ),
 				'fields'     => array(
 					array(
 						'field'       => 'search_placeholder',
 						'type'        => __( 'Search Modal: placeholder', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
-			'search-dropdown'           => array(
+			'search-dropdown'         => array(
 				'conditions' => array( '_type' => 'search-dropdown' ),
 				'fields'     => array(
 					array(
 						'field'       => 'search_placeholder',
 						'type'        => __( 'Search Dropdown: placeholder', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'LINE',
 					),
 				),
 			),
@@ -345,7 +375,7 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 				'fields'            => array(),
 				'integration-class' => 'WPML_Cornerstone_Accordion',
 			),
-			'tabs'               => array(
+			'tabs'                    => array(
 				'conditions'        => array( '_type' => 'tabs' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Cornerstone_Tabs',
