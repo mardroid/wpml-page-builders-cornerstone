@@ -215,6 +215,16 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 					),
 				),
 			),
+			'classic:custom-headline' => array(
+				'conditions' => array( '_type' => 'classic:custom-headline' ),
+				'fields'     => array(
+					array(
+						'field'       => 'content',
+						'type'        => __( 'Classic headline text content', 'sitepress' ),
+						'editor_type' => 'VISUAL',
+					),
+				),
+			),
 			'content-area-off-canvas' => array(
 				'conditions' => array( '_type' => 'content-area-off-canvas' ),
 				'fields'     => array(

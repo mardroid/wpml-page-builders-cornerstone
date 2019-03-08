@@ -143,6 +143,10 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 			return $settings['text_tag'];
 		}
 
+		if ( isset( $settings['_type'] ) && 'classic:custom-headline' === $settings['_type'] && isset( $settings['level'] ) ) {
+			return $settings['level'];
+		}
+
 		return '';
 	}
 
@@ -258,6 +262,16 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 					array(
 						'field'       => 'text_content',
 						'type'        => __( 'Headline text content', 'sitepress' ),
+						'editor_type' => 'VISUAL',
+					),
+				),
+			),
+			'classic:custom-headline' => array(
+				'conditions' => array( '_type' => 'classic:custom-headline' ),
+				'fields'     => array(
+					array(
+						'field'       => 'content',
+						'type'        => __( 'Classic headline text content', 'sitepress' ),
 						'editor_type' => 'VISUAL',
 					),
 				),
