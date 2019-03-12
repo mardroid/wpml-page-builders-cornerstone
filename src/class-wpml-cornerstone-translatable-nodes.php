@@ -139,12 +139,15 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 	 * @return string
 	 */
 	private function get_wrap_tag( $settings ) {
-		if ( isset( $settings['_type'] ) && 'headline' === $settings['_type'] && isset( $settings['text_tag'] ) ) {
-			return $settings['text_tag'];
-		}
+		$seo_elements = array(
+			'headline'                => 'text_tag',
+			'classic:custom-headline' => 'level',
+		);
 
-		if ( isset( $settings['_type'] ) && 'classic:custom-headline' === $settings['_type'] && isset( $settings['level'] ) ) {
-			return $settings['level'];
+		foreach ( $seo_elements as $type => $attr ) {
+			if ( isset( $settings['_type'] ) && $type === $settings['_type'] && isset( $settings[ $attr ] ) ) {
+				return $settings[ $attr ];
+			}
 		}
 
 		return '';
