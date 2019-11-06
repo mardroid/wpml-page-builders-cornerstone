@@ -86,4 +86,41 @@ class Test_WPML_Cornerstone_Data_Settings extends OTGS_TestCase {
 		$subject = new WPML_Cornerstone_Data_Settings();
 		$this->assertEquals( array( '_cornerstone_data' ), $subject->get_fields_to_save() );
 	}
+
+	/**
+	 * @test
+	 * @dataProvider dpShouldReturnIsHandlingPost
+	 *
+	 * @group wpmlcore-6929
+	 *
+	 * @param mixed $cornerstoneData
+	 * @param mixed $overridingCornerstone
+	 * @param bool  $expectedResult
+	 */
+	public function itShouldReturnIsHandlingPost( $cornerstoneData, $overridingCornerstone, $expectedResult ) {
+		$postId = 123;
+
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $postId, '_cornerstone_data', true ],
+			'return' => $cornerstoneData,
+		] );
+
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $postId, '_cornerstone_override', true ],
+			'return' => $overridingCornerstone,
+		] );
+
+		$subject = new WPML_Cornerstone_Data_Settings();
+
+		$this->assertSame( $expectedResult, $subject->is_handling_post( $postId ) );
+	}
+
+	public function dpShouldReturnIsHandlingPost() {
+		return [
+			'with cornerstone data'                   => [ 'some data', '', true ],
+			'with cornerstone data and overriding #1' => [ 'some data', 1, false ],
+			'with cornerstone data and overriding #2' => [ 'some data', '1', false ],
+			'with no cornerstone data'                => [ '', '', false ],
+		];
+	}
 }
