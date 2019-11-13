@@ -32,21 +32,51 @@ class Test_WPML_Cornerstone_Update_Translation extends OTGS_TestCase {
 			),
 		);
 
-		$meta_field_data = array(
-			array(
-				'_type' => 'custom-node',
-				'text'  => 'value',
-			),
-		);
+		$meta_field_data = [
+			[
+				'_type' => 'section',
+				'_modules' => [
+					[
+						'_type' => 'classic:row',
+						'_modules' => [
+							[
+								'_type' => 'layout-column',
+								'_modules' => [
+									[
+										'_type' => 'custom-node',
+										'text'  => 'value',
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		];
 
-		$meta_field_translated_data = array(
-			array(
-				'_type' => 'custom-node',
-				'text'  => $translation,
-			),
-		);
+		$meta_field_translated_data = [
+			[
+				'_type' => 'section',
+				'_modules' => [
+					[
+						'_type' => 'classic:row',
+						'_modules' => [
+							[
+								'_type' => 'layout-column',
+								'_modules' => [
+									[
+										'_type' => 'custom-node',
+										'text'  => $translation,
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		];
 
-		$node_id = md5( serialize( $meta_field_data[0] ) );
+		$node_id = md5( serialize( $meta_field_data[0]['_modules'][0]['_modules'][0]['_modules'][0] ) );
 
 		$string_translations = array(
 			'text-custom-node-' . $node_id => array(
