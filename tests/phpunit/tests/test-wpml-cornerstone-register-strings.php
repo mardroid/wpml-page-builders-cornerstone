@@ -40,7 +40,7 @@ class Test_WPML_Cornerstone_Register_Strings extends OTGS_TestCase {
 
 		$node_id = md5( serialize( $data[0]['_modules'][0]['_modules'][0]['_modules'][0] ) );
 
-		\WP_Mock::wpFunction( 'get_post_meta', array(
+		\WP_Mock::userFunction( 'get_post_meta', array(
 			'times'  => 1,
 			'args'   => [ $post->ID, '_cornerstone_data', false ],
 			'return' => [ json_encode( $data ) ],
@@ -67,6 +67,9 @@ class Test_WPML_Cornerstone_Register_Strings extends OTGS_TestCase {
 		$data_settings->method( 'convert_data_to_array' )
 		              ->with( [ json_encode( $data ) ] )
 		              ->willReturn( json_decode( json_encode( $data ), true ) );
+		$data_settings->method( 'is_handling_post' )
+		              ->with( $post->ID )
+		              ->willReturn( true );
 
 		/** @var \WPML_PB_String_Registration|\PHPUnit_Framework_MockObject_MockObject $string_registration */
 		$string_registration = $this->getMockBuilder( 'WPML_PB_String_Registration' )
