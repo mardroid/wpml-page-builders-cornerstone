@@ -305,6 +305,11 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 						'type'        => __( 'Anchor text: secondary content', 'sitepress' ),
 						'editor_type' => 'LINE',
 					),
+					array(
+						'field'       => 'anchor_href',
+						'type'        => __( 'Anchor text: anchor link', 'sitepress' ),
+						'editor_type' => 'LINE',
+					),
 				),
 			),
 			'video'                   => array(
